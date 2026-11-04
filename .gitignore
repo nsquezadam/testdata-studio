@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Variables de entorno / credenciales
+.env
+.env.*
+!.env.example
+
+# React / Node
+node_modules/
+dist/
+build/
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+
+# Windows / Sistema
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Temporales Microsoft Office
+~$*.docx
+~$*.xlsx
+~$*.pptx
