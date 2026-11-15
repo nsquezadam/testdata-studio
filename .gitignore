@@ -3,12 +3,16 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+*.py[cod]
+backend/.venv/
+.pytest_cache/
 
 # Variables de entorno / credenciales
 .env
 .env.*
 !.env.example
-
+backend/.env
+frontend/.env
 # React / Node
 node_modules/
 dist/
@@ -19,9 +23,11 @@ build/
 .coverage
 htmlcov/
 
-# IDE
+# IDE / OS
 .vscode/
 .idea/
+.DS_Store
+Thumbs.db
 
 # Windows / Sistema
 Thumbs.db
@@ -34,3 +40,15 @@ Thumbs.db
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx
+
+# FRONTED 
+# Node
+frontend/node_modules/
+frontend/dist/
+
+
+# Documentación y material de trabajo local
+/docs/
+/design/
+/evidencias/
+/DATOS_EXTRAS.md
