@@ -52,3 +52,16 @@ frontend/dist/
 /design/
 /evidencias/
 /DATOS_EXTRAS.md
+/database/
+
+# Respaldos y archivos auxiliares
+/backend/db_package_backup/
+README_v1.md
+
+# Documentación técnica temporal de desarrollo
+frontend/README_M02_INC02.md
+frontend/README_M03_CP06.md
+backend/README_INC02.md
+backend/README_INC03.md
+backend/README_INC04.md
+backend/README_M03_CP06.md
