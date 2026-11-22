@@ -16,11 +16,21 @@ from __future__ import annotations
 # La respuesta conserva detalle_esperado persistido cuando existe.
 # Motivo: no perder las marcas de regla objetivo y NO APLICA generadas por
 # el motor al aislar escenarios INVALIDOS con reglas dependientes.
+#
+# MODIFICACIÓN 2026-11-20 - M03 / CP-07 - EXPORTACIÓN CSV Y JSON
+# Se agregan descargas autenticadas de la data de prueba de una generación.
+# Motivo: implementar HU-06 / RF11 permitiendo utilizar los datos generados
+# en un sistema externo. Los archivos exportan caso_prueba_id + campos
+# dinámicos del modelo; la trazabilidad detallada permanece en TestData Studio.
 # ============================================================
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
+
+import csv
+import io
+import json
 
 from app.api.deps import require_roles
 from app.db import get_db
@@ -79,26 +89,88 @@ def _generation_response(db: Session, generacion_id: int) -> GenerationResponse:
         .order_by(TestCase.caso_prueba_id)
     ).all()
 
-    case_responses: list[TestCaseResponse] = []
-    for case in cases:
-        data_rows = db.execute(
+    # ============================================================
+    # OPTIMIZACIÓN 2026-11-21 - JM-01 / RNF03
+    # Se elimina el patrón N+1 de consultas al construir la respuesta de una
+    # generación. Antes se consultaban datos/reglas por cada caso y además
+    # campos/parámetros por cada regla, lo que multiplicaba los viajes a Neon.
+    # Ahora la trazabilidad completa se carga en consultas agrupadas y se
+    # organiza en memoria. No cambia el JSON expuesto por la API.
+    # ============================================================
+    case_ids = [case.caso_prueba_id for case in cases]
+
+    data_by_case: dict[int, list[tuple[GeneratedData, DataField, DataType]]] = {
+        case_id: [] for case_id in case_ids
+    }
+    rules_by_case: dict[int, list[tuple[CaseRule, BusinessRule, RuleType]]] = {
+        case_id: [] for case_id in case_ids
+    }
+
+    if case_ids:
+        all_data_rows = db.execute(
             select(GeneratedData, DataField, DataType)
             .join(DataField, DataField.campo_id == GeneratedData.campo_id)
             .join(DataType, DataType.tipo_dato_id == DataField.tipo_dato_id)
-            .where(GeneratedData.caso_prueba_id == case.caso_prueba_id)
-            .order_by(DataField.orden.is_(None), DataField.orden, DataField.campo_id)
+            .where(GeneratedData.caso_prueba_id.in_(case_ids))
+            .order_by(
+                GeneratedData.caso_prueba_id,
+                DataField.orden.is_(None),
+                DataField.orden,
+                DataField.campo_id,
+            )
         ).all()
+        for data, field, data_type in all_data_rows:
+            data_by_case[data.caso_prueba_id].append((data, field, data_type))
 
-        rule_rows = db.execute(
+        all_rule_rows = db.execute(
             select(CaseRule, BusinessRule, RuleType)
             .join(BusinessRule, BusinessRule.regla_id == CaseRule.regla_id)
             .join(RuleType, RuleType.tipo_regla_id == BusinessRule.tipo_regla_id)
-            .where(CaseRule.caso_prueba_id == case.caso_prueba_id)
-            .order_by(BusinessRule.regla_id)
+            .where(CaseRule.caso_prueba_id.in_(case_ids))
+            .order_by(CaseRule.caso_prueba_id, BusinessRule.regla_id)
         ).all()
+        for trace, rule, rule_type in all_rule_rows:
+            rules_by_case[trace.caso_prueba_id].append((trace, rule, rule_type))
+    else:
+        all_rule_rows = []
 
-        # Mapa de valores persistidos para relacionar cada regla con los datos
-        # concretos utilizados durante esta generación.
+    rule_ids = sorted({rule.regla_id for _, rule, _ in all_rule_rows})
+    fields_by_rule: dict[int, list[tuple[RuleField, DataField, DataType]]] = {
+        rule_id: [] for rule_id in rule_ids
+    }
+    params_by_rule: dict[int, list[RuleParameter]] = {
+        rule_id: [] for rule_id in rule_ids
+    }
+
+    if rule_ids:
+        all_rule_field_rows = db.execute(
+            select(RuleField, DataField, DataType)
+            .join(DataField, DataField.campo_id == RuleField.campo_id)
+            .join(DataType, DataType.tipo_dato_id == DataField.tipo_dato_id)
+            .where(RuleField.regla_id.in_(rule_ids))
+            .order_by(RuleField.regla_id, RuleField.rol_campo, DataField.campo_id)
+        ).all()
+        for association, field, data_type in all_rule_field_rows:
+            fields_by_rule[association.regla_id].append((association, field, data_type))
+
+        all_params = db.scalars(
+            select(RuleParameter)
+            .where(RuleParameter.regla_id.in_(rule_ids))
+            .order_by(
+                RuleParameter.regla_id,
+                RuleParameter.orden.is_(None),
+                RuleParameter.orden,
+                RuleParameter.parametro_id,
+            )
+        ).all()
+        for param in all_params:
+            params_by_rule[param.regla_id].append(param)
+
+    case_responses: list[TestCaseResponse] = []
+    for case in cases:
+        data_rows = data_by_case[case.caso_prueba_id]
+        rule_rows = rules_by_case[case.caso_prueba_id]
+
         generated_values = {
             field.campo_id: data.valor_generado
             for data, field, _ in data_rows
@@ -114,29 +186,14 @@ def _generation_response(db: Session, generacion_id: int) -> GenerationResponse:
 
         enriched_rules: list[CaseRuleResponse] = []
         for trace, rule, rule_type in rule_rows:
-            rule_field_rows = db.execute(
-                select(RuleField, DataField, DataType)
-                .join(DataField, DataField.campo_id == RuleField.campo_id)
-                .join(DataType, DataType.tipo_dato_id == DataField.tipo_dato_id)
-                .where(RuleField.regla_id == rule.regla_id)
-                .order_by(RuleField.rol_campo, DataField.campo_id)
-            ).all()
+            rule_field_rows = fields_by_rule.get(rule.regla_id, [])
+            rule_params = params_by_rule.get(rule.regla_id, [])
 
-            rule_params = db.scalars(
-                select(RuleParameter)
-                .where(RuleParameter.regla_id == rule.regla_id)
-                .order_by(
-                    RuleParameter.orden.is_(None),
-                    RuleParameter.orden,
-                    RuleParameter.parametro_id,
-                )
-            ).all()
-
-            fields_by_role: dict[str, FieldConfig] = {}
+            config_fields: dict[str, FieldConfig] = {}
             trace_fields: list[RuleTraceFieldResponse] = []
             for association, field, data_type in rule_field_rows:
                 role = association.rol_campo.upper()
-                fields_by_role[role] = FieldConfig(
+                config_fields[role] = FieldConfig(
                     campo_id=field.campo_id,
                     nombre=field.nombre,
                     tipo=data_type.codigo.upper(),
@@ -156,7 +213,7 @@ def _generation_response(db: Session, generacion_id: int) -> GenerationResponse:
                 regla_id=rule.regla_id,
                 nombre=rule.nombre,
                 tipo=rule_type.codigo.upper(),
-                fields=fields_by_role,
+                fields=config_fields,
                 params={
                     param.clave.strip().lower(): param.valor.strip()
                     for param in rule_params
@@ -226,6 +283,86 @@ def _generation_response(db: Session, generacion_id: int) -> GenerationResponse:
         estado=generation.estado,
         casos=case_responses,
     )
+
+
+def _owned_generation_response(
+    db: Session,
+    generacion_id: int,
+    analyst: User,
+) -> GenerationResponse:
+    """Obtiene una generación del analista y valida que tenga registros exportables."""
+    generation = db.scalar(
+        select(Generation).where(Generation.generacion_id == generacion_id)
+    )
+    if generation is None:
+        raise HTTPException(status_code=404, detail="Generación no encontrada.")
+    if generation.usuario_id != analyst.usuario_id:
+        raise HTTPException(
+            status_code=403,
+            detail="No posee permisos para exportar esta generación.",
+        )
+
+    detail = _generation_response(db, generacion_id)
+    if not detail.casos:
+        raise HTTPException(
+            status_code=409,
+            detail="La generación no contiene registros disponibles para exportar.",
+        )
+    return detail
+
+
+def _coerce_export_value(value: str | None, data_type: str) -> object:
+    """Convierte el valor persistido al tipo lógico del campo para exportación JSON."""
+    if value is None:
+        return None
+
+    code = (data_type or "").upper()
+    text = str(value)
+
+    try:
+        if code == "INTEGER":
+            return int(text)
+        if code == "DECIMAL":
+            return float(text)
+        if code == "BOOLEAN":
+            lowered = text.strip().lower()
+            if lowered == "true":
+                return True
+            if lowered == "false":
+                return False
+    except (TypeError, ValueError):
+        # Si un valor histórico no puede convertirse, se conserva como texto
+        # para no impedir la exportación de una generación ya almacenada.
+        return text
+
+    return text
+
+
+def _export_rows(detail: GenerationResponse) -> tuple[list[str], list[dict[str, object]]]:
+    """Construye data de prueba: caso_prueba_id + campos dinámicos del modelo."""
+    field_names: list[str] = []
+    seen: set[str] = set()
+    for case in detail.casos:
+        for item in case.datos:
+            if item.campo_nombre not in seen:
+                seen.add(item.campo_nombre)
+                field_names.append(item.campo_nombre)
+
+    rows: list[dict[str, object]] = []
+    for case in detail.casos:
+        values = {
+            item.campo_nombre: _coerce_export_value(
+                item.valor_generado,
+                item.tipo_dato_codigo,
+            )
+            for item in case.datos
+        }
+        row: dict[str, object] = {"caso_prueba_id": case.caso_prueba_id}
+        for field_name in field_names:
+            row[field_name] = values.get(field_name)
+        rows.append(row)
+
+    return field_names, rows
 
 
 @router.get(
@@ -327,6 +464,61 @@ def list_generations(
         )
         for generation, model, project, scenario, total_cases in rows
     ]
+
+
+@router.get("/generations/{generacion_id}/export/csv")
+def export_generation_csv(
+    generacion_id: int,
+    db: Session = Depends(get_db),
+    analyst: User = Depends(require_roles("Analista/Tester")),
+):
+    detail = _owned_generation_response(db, generacion_id, analyst)
+    field_names, rows = _export_rows(detail)
+
+    output = io.StringIO(newline="")
+    headers = ["caso_prueba_id", *field_names]
+    writer = csv.DictWriter(output, fieldnames=headers)
+    writer.writeheader()
+
+    # CSV se orienta a interoperabilidad: booleanos en minúscula y NULL vacío.
+    for row in rows:
+        csv_row = {
+            key: (
+                "true" if value is True
+                else "false" if value is False
+                else value
+            )
+            for key, value in row.items()
+        }
+        writer.writerow(csv_row)
+
+    # BOM UTF-8 para facilitar apertura directa en Excel sin perder acentos.
+    content = "\ufeff" + output.getvalue()
+    filename = f"testdata_generacion_{generacion_id}.csv"
+    return Response(
+        content=content.encode("utf-8"),
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@router.get("/generations/{generacion_id}/export/json")
+def export_generation_json(
+    generacion_id: int,
+    db: Session = Depends(get_db),
+    analyst: User = Depends(require_roles("Analista/Tester")),
+):
+    detail = _owned_generation_response(db, generacion_id, analyst)
+    _, rows = _export_rows(detail)
+
+    # JSON se entrega como arreglo directo para facilitar su consumo por otro sistema.
+    payload = rows
+    filename = f"testdata_generacion_{generacion_id}.json"
+    return Response(
+        content=json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8"),
+        media_type="application/json; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 @router.get("/generations/{generacion_id}", response_model=GenerationResponse)

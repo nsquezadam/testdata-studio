@@ -20,6 +20,9 @@ python-dotenv==1.2.4
 PyJWT>=2.10,<3.0
 pwdlib[argon2]>=0.2,<1.0
 
+# Archivos multipart (importación CSV M04 / CP-09)
+python-multipart==0.0.29
+
 # Testing
 pytest==9.2.0
 httpx==0.28.1

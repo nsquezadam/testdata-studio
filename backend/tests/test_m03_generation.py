@@ -11,13 +11,25 @@
 # Se exige que cada escenario INVALIDO posea exactamente una regla en FALSE:
 # la regla objetivo. Las reglas dependientes de un REQUIRED con NULL deben
 # quedar registradas como "No aplica" y no como un segundo incumplimiento.
+#
+# MODIFICACIÓN 2026-11-20 - M03 / CP-07
+# Se agregan pruebas de exportación CSV/JSON y generación sin registros.
+# Motivo: validar HU-06 / RF11. La exportación corresponde a data de prueba
+# reutilizable externamente: caso_prueba_id + campos dinámicos del modelo.
 # ============================================================
+
+import csv
+import io
+import json
+
+import pytest
 
 from sqlalchemy import select
 
 from app.db import SessionLocal
-from app.models.configuration import DataType, RuleType
+from app.models.configuration import DataType, RuleType, RuleParameter
 from app.models.generation import CaseRule, GeneratedData, Generation, TestCase as GeneratedTestCase
+from app.models.user import User
 
 
 def _token_tester(client):
@@ -381,3 +393,177 @@ def test_generacion_invalida_aisla_dependencias_compartidas(client):
     values = {item["campo_nombre"]: item["valor_generado"] for item in second["datos"]}
     assert values["nombre_cliente"] == "XXXX"
     assert values["razon_social"] == "XXXX"
+
+
+def test_exportacion_csv_y_json_corresponde_a_generacion(client):
+    headers = _headers(client)
+    model_id = _configure_six_rules(client, headers)
+
+    created = client.post(
+        "/api/generations",
+        headers=headers,
+        json={
+            "modelo_id": model_id,
+            "cantidad_solicitada": 2,
+            "tipo_escenario": "VALIDO",
+        },
+    )
+    assert created.status_code == 201, created.text
+    generation = created.json()
+    generation_id = generation["generacion_id"]
+
+    csv_response = client.get(
+        f"/api/generations/{generation_id}/export/csv",
+        headers=headers,
+    )
+    assert csv_response.status_code == 200, csv_response.text
+    assert "text/csv" in csv_response.headers["content-type"]
+    assert f"testdata_generacion_{generation_id}.csv" in csv_response.headers["content-disposition"]
+
+    csv_text = csv_response.content.decode("utf-8-sig")
+    rows = list(csv.DictReader(io.StringIO(csv_text)))
+    assert len(rows) == 2
+    assert {int(row["caso_prueba_id"]) for row in rows} == {
+        case["caso_prueba_id"] for case in generation["casos"]
+    }
+    expected_fields = {
+        "caso_prueba_id",
+        "edad_cliente",
+        "email_cliente",
+        "tipo_cliente",
+        "fecha_inicio",
+        "fecha_fin",
+    }
+    assert set(rows[0].keys()) == expected_fields
+    assert "generacion_id" not in rows[0]
+    assert "tipo_escenario" not in rows[0]
+    assert "regla_objetivo" not in rows[0]
+    assert "resultado_esperado" not in rows[0]
+
+    json_response = client.get(
+        f"/api/generations/{generation_id}/export/json",
+        headers=headers,
+    )
+    assert json_response.status_code == 200, json_response.text
+    assert "application/json" in json_response.headers["content-type"]
+    assert f"testdata_generacion_{generation_id}.json" in json_response.headers["content-disposition"]
+
+    payload = json.loads(json_response.content.decode("utf-8"))
+    assert isinstance(payload, list)
+    assert len(payload) == 2
+    assert {row["caso_prueba_id"] for row in payload} == {
+        case["caso_prueba_id"] for case in generation["casos"]
+    }
+    assert set(payload[0].keys()) == expected_fields
+    assert isinstance(payload[0]["edad_cliente"], int)
+    assert "generacion_id" not in payload[0]
+    assert "tipo_escenario" not in payload[0]
+    assert "resultado_esperado" not in payload[0]
+
+
+def test_exportacion_informa_generacion_sin_registros(client):
+    headers = _headers(client)
+    model_id = _create_model(client, headers, "Modelo exportación vacía")
+
+    with SessionLocal() as db:
+        tester = db.scalar(select(User).where(User.email == "tester@test.local"))
+        assert tester is not None
+        empty_generation = Generation(
+            modelo_id=model_id,
+            usuario_id=tester.usuario_id,
+            cantidad_solicitada=1,
+            estado="COMPLETADA",
+        )
+        db.add(empty_generation)
+        db.commit()
+        db.refresh(empty_generation)
+        generation_id = empty_generation.generacion_id
+
+    response = client.get(
+        f"/api/generations/{generation_id}/export/csv",
+        headers=headers,
+    )
+    assert response.status_code == 409
+    assert "no contiene registros" in response.json()["detail"].lower()
+
+
+
+def test_generacion_100_registros_conserva_trazabilidad(client):
+    """REGRESIÓN 2026-11-21 - JM-01 / RNF03.
+
+    Valida que la optimización de persistencia por lotes permita seguir
+    devolviendo los 100 casos completos con sus datos y reglas, sin alterar
+    el contrato funcional del endpoint POST /api/generations.
+    """
+    headers = _headers(client)
+    model_id = _configure_six_rules(client, headers)
+
+    response = client.post(
+        "/api/generations",
+        headers=headers,
+        json={
+            "modelo_id": model_id,
+            "cantidad_solicitada": 100,
+            "tipo_escenario": "VALIDO",
+        },
+    )
+
+    assert response.status_code == 201, response.text
+    data = response.json()
+    assert data["estado"] == "COMPLETADA"
+    assert data["cantidad_solicitada"] == 100
+    assert len(data["casos"]) == 100
+    assert all(len(case["datos"]) == 5 for case in data["casos"])
+    assert all(len(case["reglas"]) == 6 for case in data["casos"])
+    assert all(
+        all(rule["cumple_esperado"] for rule in case["reglas"])
+        for case in data["casos"]
+    )
+
+
+# MODIFICACIÓN 2026-11-22 - M03 / CP-06
+# Regresión de configuración histórica: clave singular, lista ausente o vacía.
+@pytest.mark.parametrize("stored_key,stored_value", [("valor", "PERSONA"), (None, None), ("valores", " , ")])
+def test_lista_incompleta_impide_generacion_y_permite_reparacion(client, stored_key, stored_value):
+    headers = _headers(client)
+    model_id = _create_model(client, headers, "Lista histórica")
+    field = _create_field(client, headers, model_id, "STRING", "tipo_cliente", 1)
+    rule = _create_rule(
+        client, headers, model_id, "ALLOWED_VALUES", "Tipos permitidos",
+        [{"campo_id": field["campo_id"], "rol_campo": "PRINCIPAL"}],
+        [{"clave": "valores", "valor": "PERSONA,EMPRESA", "orden": 1}],
+    )
+    rule_id = rule["regla_id"]
+    with SessionLocal() as db:
+        db.query(RuleParameter).filter(RuleParameter.regla_id == rule_id).delete()
+        if stored_key is not None:
+            db.add(RuleParameter(regla_id=rule_id, clave=stored_key, valor=stored_value, orden=1))
+        db.commit()
+
+    ready = client.get(f"/api/models/{model_id}/generation-readiness", headers=headers)
+    assert ready.status_code == 200
+    assert ready.json()["listo"] is False
+    assert ready.json()["reglas_limite"] == 0
+    assert "Tipos permitidos" in ready.json()["observaciones"][0]
+    payload = {"modelo_id": model_id, "cantidad_solicitada": 3, "tipo_escenario": "VALIDO"}
+    for scenario in ("VALIDO", "INVALIDO", "LIMITE"):
+        response = client.post("/api/generations", headers=headers, json={**payload, "tipo_escenario": scenario})
+        assert response.status_code == 400, response.text
+        assert "valores" in response.json()["detail"]
+    with SessionLocal() as db:
+        assert db.query(Generation).count() == 0
+        assert db.query(GeneratedTestCase).count() == 0
+
+    repaired = client.put(f"/api/rules/{rule_id}", headers=headers, json={
+        "tipo_regla_id": _catalog_id(RuleType, "ALLOWED_VALUES"),
+        "nombre": "Tipos permitidos", "descripcion": "Lista corregida",
+        "campos": [{"campo_id": field["campo_id"], "rol_campo": "PRINCIPAL"}],
+        "parametros": [{"clave": "valores", "valor": "PERSONA,EMPRESA", "orden": 1}],
+    })
+    assert repaired.status_code == 200, repaired.text
+    ready = client.get(f"/api/models/{model_id}/generation-readiness", headers=headers)
+    assert ready.json()["listo"] is True
+    generated = client.post("/api/generations", headers=headers, json=payload)
+    assert generated.status_code == 201, generated.text
+    assert len(generated.json()["casos"]) == 3
+    assert all(case["datos"][0]["valor_generado"] in {"PERSONA", "EMPRESA"} for case in generated.json()["casos"])

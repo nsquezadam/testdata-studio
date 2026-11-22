@@ -1,0 +1,7 @@
+# Propiedades locales con credenciales
+local.properties
+
+# Resultados y reportes generados por JMeter
+/resultados/*.jtl
+/reportes/*
+!/reportes/.gitkeep

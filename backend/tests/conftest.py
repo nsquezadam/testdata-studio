@@ -1,7 +1,10 @@
 import os
 
 os.environ["DATABASE_URL"] = "sqlite+pysqlite:///:memory:"
-os.environ["JWT_SECRET"] = "test-secret-only"
+# MODIFICACIÓN 2026-11-21 - PRUEBAS AUTOMATIZADAS
+# Se utiliza una clave de prueba de 32+ caracteres para cumplir la longitud
+# recomendada de HS256 y evitar advertencias criptográficas durante pytest.
+os.environ["JWT_SECRET"] = "testdata-studio-test-secret-32-chars-minimum"
 
 import pytest
 from fastapi.testclient import TestClient
@@ -20,6 +23,7 @@ from app.models.configuration import (
 )
 from app.models.project import DataModel, Project
 from app.models.generation import CaseRule, GeneratedData, Generation, TestCase
+from app.models.execution import Execution
 from app.models.user import Role, User
 
 
@@ -33,6 +37,9 @@ def database_schema():
 @pytest.fixture(autouse=True)
 def clean_and_seed():
     with SessionLocal() as db:
+        # MODIFICACIÓN 2026-11-20 - M04 / CP-08
+        # Ejecución depende de caso_prueba, por lo que se elimina primero.
+        db.query(Execution).delete()
         # MODIFICACIÓN 2026-11-18 - M03 / CP-06
         # Se limpian primero las tablas de generación para respetar las FK.
         db.query(GeneratedData).delete()

@@ -1,10 +1,17 @@
-import { apiFetch } from './client'
+import { apiDownload, apiFetch } from './client'
 
 /* ============================================================
-   CREACIÓN 2026-11-19 - M03 / CP-06
+   CREACIÓN 2026-11-18 - M03 / CP-06
    Cliente REST para Generación de Datos y Escenarios.
    Motivo: implementar HU-05 / RF08-RF10 manteniendo JWT y control
-   de sesión centralizados en apiFetch. Exportación queda para CP-07.
+   de sesión centralizados en apiFetch.
+
+   MODIFICACIÓN 2026-11-20 - M03 / CP-07
+   Se habilitan descargas CSV/JSON protegidas por JWT para HU-06 / RF11.
+
+   AJUSTE 2026-11-20 - CP-07 V3
+   El nombre del archivo se construye también en frontend usando el ID de generación
+   para evitar nombres genéricos cuando el navegador no expone Content-Disposition.
    ============================================================ */
 
 export function getGenerationReadiness(modeloId) {
@@ -29,4 +36,13 @@ export function getGenerations(modeloId = null, limit = 10) {
 
 export function getGeneration(generacionId) {
   return apiFetch(`/generations/${generacionId}`)
+}
+
+export function exportGeneration(generacionId, format) {
+  const normalized = String(format).toLowerCase()
+  if (!['csv', 'json'].includes(normalized)) {
+    throw new Error('Formato de exportación no soportado.')
+  }
+  const filename = `testdata_generacion_${generacionId}.${normalized}`
+  return apiDownload(`/generations/${generacionId}/export/${normalized}`, filename)
 }

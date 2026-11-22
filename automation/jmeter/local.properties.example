@@ -1,0 +1,29 @@
+# 2026-11-21 - Copiar como local.properties y completar localmente.
+# NO subir local.properties al repositorio.
+host=127.0.0.1
+port=8000
+protocol=http
+tester_email=tester@testdata.local
+tester_password=CAMBIAR
+modelo_id=5
+
+# JM-01
+threads=1
+ramp=1
+loops=20
+
+# JM-02
+# threads=10
+# ramp=30
+# duration=300
+
+# JM-03 opcional: ajustar según capacidad del ambiente
+# stress1_threads=10
+# stress1_ramp=10
+# stress1_duration=60
+# stress2_threads=25
+# stress2_ramp=20
+# stress2_duration=60
+# stress3_threads=50
+# stress3_ramp=30
+# stress3_duration=60

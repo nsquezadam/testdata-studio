@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { useAuth } from '../auth/AuthContext'
+import testDataCentrifuga from '../assets/Centrífuga_datos.png'
+
+
 
 /*
 2026-11-15
@@ -40,11 +43,16 @@ export default function LoginPage({ onSuccess }) {
   return (
     <main className="login-shell">
       <section className="brand-panel">
-        <span className="eyebrow">Proyecto de Título</span>
         <h1>TestData Studio</h1>
         <p>Generación y seguimiento de datos de prueba basados en reglas de negocio.</p>
+           <div className="brand-visual">
+      <img
+        src={testDataCentrifuga}
+        alt="Proceso de generación de datos de prueba de TestData Studio"
+      />
+    </div>
         <div className="trace-card">
-          <span>Regla</span><b>→</b><span>Escenario</span><b>→</b><span>Dato</span><b>→</b><span>Resultado</span>
+           <span>Regla</span><b>→</b><span>Escenario</span><b>→</b><span>Dato</span><b>→</b><span>Resultado</span>
         </div>
       </section>
 

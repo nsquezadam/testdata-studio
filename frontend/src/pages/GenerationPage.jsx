@@ -3,8 +3,11 @@
    Pantalla F03 - Generación de Datos y Escenarios.
    Permite seleccionar proyecto/modelo, cantidad y escenario VALIDO,
    INVALIDO o LIMITE; muestra los casos generados y su trazabilidad.
-   Motivo: implementar HU-05 / RF08-RF10. Los botones de exportación
-   se dejan visibles pero deshabilitados hasta CP-07 / RF11.
+   Motivo: implementar HU-05 / RF08-RF10.
+
+   MODIFICACIÓN 2026-11-20 - M03 / CP-07 - EXPORTACIÓN
+   Se habilitan CSV y JSON para una generación almacenada. Motivo:
+   implementar HU-06 / RF11 sin modificar la generación ya aprobada.
 
    MODIFICACIÓN 2026-11-19 - M03 / CP-06 - TRAZABILIDAD ENRIQUECIDA
    Se muestran campos/roles, valores generados, parámetros y explicación
@@ -34,6 +37,7 @@ import {
   getGeneration,
   getGenerationReadiness,
   getGenerations,
+  exportGeneration,
 } from '../api/generation'
 
 
@@ -83,6 +87,7 @@ export default function GenerationPage() {
   const [loadingModel, setLoadingModel] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [loadingGeneration, setLoadingGeneration] = useState(false)
+  const [exporting, setExporting] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
@@ -302,6 +307,27 @@ export default function GenerationPage() {
   }
 
 
+  async function handleExport(format) {
+    if (!generation?.generacion_id) {
+      setError('Selecciona una generación antes de exportar.')
+      return
+    }
+
+    setError('')
+    setSuccess('')
+    setExporting(format)
+
+    try {
+      const filename = await exportGeneration(generation.generacion_id, format)
+      setSuccess(`Archivo ${format.toUpperCase()} generado correctamente: ${filename}`)
+    } catch (requestError) {
+      setError(requestError.message)
+    } finally {
+      setExporting('')
+    }
+  }
+
+
   async function handleOpenGeneration(generationId) {
     setLoadingGeneration(true)
     setError('')
@@ -515,18 +541,18 @@ export default function GenerationPage() {
               <button
                 type="button"
                 className="secondary-button"
-                disabled
-                title="Disponible cuando se habilite la exportación."
+                disabled={Boolean(exporting)}
+                onClick={() => handleExport('csv')}
               >
-                Exportar CSV
+                {exporting === 'csv' ? 'Exportando...' : 'Exportar CSV'}
               </button>
               <button
                 type="button"
                 className="secondary-button"
-                disabled
-                title="Disponible cuando se habilite la exportación."
+                disabled={Boolean(exporting)}
+                onClick={() => handleExport('json')}
               >
-                Exportar JSON
+                {exporting === 'json' ? 'Exportando...' : 'Exportar JSON'}
               </button>
             </div>
           </div>

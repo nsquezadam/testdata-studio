@@ -1,0 +1,4 @@
+# 2026-11-21 - Automatización E2E TestData Studio
+# Selenium se ejecuta con pytest sobre Google Chrome / Chromium.
+selenium>=4.20,<5
+pytest>=9,<10

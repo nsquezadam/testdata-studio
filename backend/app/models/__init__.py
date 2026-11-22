@@ -22,6 +22,8 @@ from app.models.project import DataModel, Project
 # MODIFICACIÓN 2026-11-18 - M03 / CP-06
 # Se exponen los modelos de persistencia de generación y trazabilidad.
 from app.models.generation import CaseRule, GeneratedData, Generation, TestCase
+# CREACIÓN 2026-11-20 - M04 / CP-08
+from app.models.execution import Execution
 from app.models.user import Role, User
 
 
@@ -43,4 +45,5 @@ __all__ = [
     "TestCase",
     "CaseRule",
     "GeneratedData",
+    "Execution",
 ]

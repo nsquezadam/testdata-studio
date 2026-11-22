@@ -12,8 +12,9 @@ from fastapi.middleware.cors import CORSMiddleware
 # MODIFICACIÓN 2026-11-18 - M03 / CP-06
 # Se incorpora el router de generación de datos y escenarios.
 # Motivo: habilitar HU-05 / RF08-RF10 sin mezclar aún la exportación CP-07.
-from app.api.routes import auth, health, secure_demo, users, projects, configuration, generation
+from app.api.routes import auth, health, secure_demo, users, projects, configuration, generation, execution, execution_import,dashboard
 from app.core.config import settings
+
 
 
 app = FastAPI(
@@ -28,6 +29,10 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    # MODIFICACIÓN 2026-11-20 - CP-07
+    # Se expone Content-Disposition para que el frontend pueda recuperar
+    # el nombre real de los archivos CSV/JSON descargados.
+    expose_headers=["Content-Disposition"],
 )
 
 app.include_router(health.router, prefix=settings.api_prefix)
@@ -37,6 +42,13 @@ app.include_router(users.router, prefix=settings.api_prefix)
 app.include_router(projects.router, prefix=settings.api_prefix)
 app.include_router(configuration.router, prefix=settings.api_prefix)
 app.include_router(generation.router, prefix=settings.api_prefix)
+# MODIFICACIÓN 2026-11-20 - M04 / CP-08
+# Se habilita el registro manual y consulta de resultados de ejecución externa.
+app.include_router(execution.router, prefix=settings.api_prefix)
+# CREACIÓN 2026-11-20 - M04 / CP-09
+# Se habilita validación previa e importación de resultados mediante CSV.
+app.include_router(execution_import.router, prefix=settings.api_prefix)
+app.include_router(dashboard.router, prefix=settings.api_prefix)
 
 @app.get("/")
 def root():

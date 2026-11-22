@@ -248,7 +248,24 @@ def readiness(db: Session, modelo_id: int) -> tuple[ModelConfiguration, list[str
     if not config.rules:
         issues.append("El modelo no posee reglas activas disponibles para generar escenarios.")
 
-    limit_count = sum(1 for rule in config.rules if _is_limit_capable(rule))
+    # MODIFICACIÓN 2026-11-22 - M03 / CP-06
+    # Detectar listas incompletas o heredadas antes de generar casos.
+    # No se inventan valores ni se omiten reglas de negocio activas.
+    invalid_list_ids: set[int] = set()
+    for rule in config.rules:
+        if rule.tipo == "ALLOWED_VALUES" and not any(
+            value.strip() for value in rule.params.get("valores", "").split(",")
+        ):
+            invalid_list_ids.add(rule.regla_id)
+            issues.append(
+                f"La regla '{rule.nombre}' (ID {rule.regla_id}) no posee valores permitidos "
+                "en el parámetro 'valores'. Edítela y guárdela nuevamente en Campos y reglas."
+            )
+
+    limit_count = sum(
+        1 for rule in config.rules
+        if rule.regla_id not in invalid_list_ids and _is_limit_capable(rule)
+    )
     return config, issues, limit_count
 
 
@@ -1050,6 +1067,15 @@ def generate(
     db.add(generation)
     db.flush()
 
+    # ============================================================
+    # OPTIMIZACIÓN 2026-11-21 - JM-01 / RNF03
+    # Los casos se construyen primero en memoria y luego se persisten por lotes.
+    # Motivo: evitar un db.flush() por cada caso, que con PostgreSQL/Neon remoto
+    # agregaba una latencia de red repetitiva y hacía que 100 registros excedieran
+    # el tiempo objetivo definido para RNF03. La lógica de reglas no cambia.
+    # ============================================================
+    prepared_cases: list[tuple[TestCase, dict[int, str | None], RuleConfig | None, set[int], dict[int, bool]]] = []
+
     for index in range(cantidad):
         values, target, non_applicable = _build_case_values(config, scenario, index)
         evaluations = {rule.regla_id: evaluate_rule(values, rule) for rule in config.rules}
@@ -1107,11 +1133,19 @@ def generate(
             tipo_escenario=scenario,
             resultado_esperado=expected,
         )
-        db.add(test_case)
-        db.flush()
+        prepared_cases.append((test_case, values, target, non_applicable, evaluations))
 
+    # Un solo flush obtiene los IDs de todos los casos. SQLAlchemy puede agrupar
+    # las inserciones en PostgreSQL, reduciendo los viajes de ida y vuelta a Neon.
+    db.add_all([item[0] for item in prepared_cases])
+    db.flush()
+
+    generated_rows: list[GeneratedData] = []
+    case_rule_rows: list[CaseRule] = []
+
+    for test_case, values, target, non_applicable, evaluations in prepared_cases:
         for field in config.fields:
-            db.add(
+            generated_rows.append(
                 GeneratedData(
                     caso_prueba_id=test_case.caso_prueba_id,
                     campo_id=field.campo_id,
@@ -1136,7 +1170,8 @@ def generate(
                 )
             else:
                 detail = evaluation_detail
-            db.add(
+
+            case_rule_rows.append(
                 CaseRule(
                     caso_prueba_id=test_case.caso_prueba_id,
                     regla_id=rule.regla_id,
@@ -1145,6 +1180,8 @@ def generate(
                 )
             )
 
+    db.add_all(generated_rows)
+    db.add_all(case_rule_rows)
     generation.estado = "COMPLETADA"
-    db.flush()
+    # El commit de la ruta realizará el flush final en un único bloque.
     return generation
