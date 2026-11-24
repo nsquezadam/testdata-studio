@@ -1,0 +1,100 @@
+<mxfile host="Electron">
+  <diagram name="Arquitectura_implementacion" id="UqxWInFTlPnscn3Yem6n">
+    <mxGraphModel dx="2751" dy="1928" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-1" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#1F2A44;" value="Desarrollo e implementación del sistema" vertex="1">
+          <mxGeometry height="40" width="1080" x="230" y="-60" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-2" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontStyle=1;fontColor=#6750E8;" value="Arquitectura del sistema con enfoque de escalabilidad de datos" vertex="1">
+          <mxGeometry height="32" width="960" x="290" y="-20" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F0FF;strokeColor=#A992FF;fontColor=#333333;fontSize=13;spacing=10;" value="&lt;b&gt;Fundamento:&lt;/b&gt; arquitectura web en capas, desacoplada y escalable. La solución actual no corresponde a una plataforma Big Data completa, pero su diseño permite evolucionar hacia mayores volúmenes de datos, usuarios y procesos." vertex="1">
+          <mxGeometry height="60" width="1420" x="60" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5B4FD9;strokeColor=#4C41C5;fontColor=#FFFFFF;fontStyle=1;fontSize=16;align=center;" value="USUARIOS" vertex="1">
+          <mxGeometry height="42" width="190" x="40" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEE9FF;strokeColor=#8E7BEF;fontSize=14;fontStyle=1;" value="Administrador" vertex="1">
+          <mxGeometry height="70" width="150" x="60" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEE9FF;strokeColor=#8E7BEF;fontSize=14;fontStyle=1;" value="Analista / Tester" vertex="1">
+          <mxGeometry height="70" width="150" x="60" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-7" parent="1" style="swimlane;rounded=1;html=1;startSize=42;fillColor=#EAF5FF;swimlaneFillColor=#2F80ED;strokeColor=#2F80ED;fontColor=light-dark(#121a91, #121212);fontStyle=1;fontSize=15;" value="CAPA DE PRESENTACIÓN" vertex="1">
+          <mxGeometry height="410" width="260" x="270" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-8" parent="eAgJ5GZ5K8EdUmw7nVrn-7" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#8ABCF5;fontColor=#1F2A44;fontSize=13;spacing=10;verticalAlign=top;" value="&lt;b&gt;Frontend Web&lt;/b&gt;&lt;br&gt;&lt;br&gt;• React&lt;br&gt;• Componentes reutilizables&lt;br&gt;• Formularios dinámicos&lt;br&gt;• Tablas, cards y alertas&lt;br&gt;• Eventos web y renderizado condicional&lt;br&gt;• CSS / estilos visuales&lt;br&gt;&lt;br&gt;&lt;b&gt;Despliegue:&lt;/b&gt; Render" vertex="1">
+          <mxGeometry height="300" width="220" x="20" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-9" parent="1" style="swimlane;rounded=1;html=1;startSize=42;fillColor=#EFFBEF;swimlaneFillColor=#2E9D50;strokeColor=#2E9D50;fontColor=light-dark(#2e7e11, #121212);fontStyle=1;fontSize=15;" value="CAPA DE SERVICIOS" vertex="1">
+          <mxGeometry height="410" width="400" x="590" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-10" parent="eAgJ5GZ5K8EdUmw7nVrn-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#65B67A;fontColor=#173222;fontSize=13;spacing=10;verticalAlign=top;" value="&lt;b&gt;API REST&lt;/b&gt;&lt;br&gt;FastAPI (Python)&lt;br&gt;&lt;br&gt;• Autenticación / Login&lt;br&gt;• Gestión de usuarios&lt;br&gt;• Proyectos&lt;br&gt;• Modelos&lt;br&gt;• Estados lógicos&lt;br&gt;• Auditoría" vertex="1">
+          <mxGeometry height="220" width="220" x="20" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-11" parent="eAgJ5GZ5K8EdUmw7nVrn-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF5E8;strokeColor=#F39C12;fontColor=#5A3A00;fontSize=12;spacing=10;verticalAlign=top;" value="&lt;b&gt;SEGURIDAD&lt;/b&gt;&lt;br&gt;&lt;br&gt;• JWT&lt;br&gt;• Control por roles&lt;br&gt;• Validación de datos&lt;br&gt;• Manejo de errores" vertex="1">
+          <mxGeometry height="220" width="125" x="255" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-12" parent="eAgJ5GZ5K8EdUmw7nVrn-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E9F9ED;strokeColor=#65B67A;fontColor=#173222;fontSize=12;spacing=8;" value="&lt;b&gt;Lógica de negocio&lt;/b&gt;&lt;br&gt;• Reglas de operación&lt;br&gt;• Asociación proyecto-modelo&lt;br&gt;• Activación / desactivación lógica" vertex="1">
+          <mxGeometry height="70" width="310" x="45" y="315" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-13" parent="1" style="swimlane;rounded=1;html=1;startSize=42;fillColor=#EEF6FF;swimlaneFillColor=#2476C7;strokeColor=#2476C7;fontColor=#164BC4;fontStyle=1;fontSize=15;" value="ACCESO A DATOS" vertex="1">
+          <mxGeometry height="410" width="220" x="1050" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-14" parent="eAgJ5GZ5K8EdUmw7nVrn-13" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6AA7E1;fontColor=#1F2A44;fontSize=13;spacing=10;verticalAlign=top;" value="&lt;b&gt;Persistencia&lt;/b&gt;&lt;br&gt;&lt;br&gt;• SQLAlchemy / ORM&lt;br&gt;• Consultas y transacciones&lt;br&gt;• Trazabilidad de cambios" vertex="1">
+          <mxGeometry height="230" width="180" x="20" y="95" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-15" parent="1" style="swimlane;rounded=1;html=1;startSize=42;fillColor=#F4F0FF;swimlaneFillColor=#6F42C1;strokeColor=#6F42C1;fontColor=light-dark(#5513b9, #121212);fontStyle=1;fontSize=15;" value="CAPA DE DATOS" vertex="1">
+          <mxGeometry height="410" width="200" x="1330" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-16" parent="eAgJ5GZ5K8EdUmw7nVrn-15" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#FFFFFF;strokeColor=#8B69D1;fontColor=#33255F;fontSize=13;spacing=10;" value="&lt;b&gt;PostgreSQL&lt;/b&gt;&lt;br&gt;Neon&lt;br&gt;&lt;br&gt;• usuarios&lt;br&gt;• roles&lt;br&gt;• proyectos&lt;br&gt;• modelos&lt;br&gt;• auditoría&lt;br&gt;&lt;br&gt;&lt;b&gt;Base de datos en la nube&lt;/b&gt;" vertex="1">
+          <mxGeometry height="250" width="160" x="20" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-17" edge="1" parent="1" source="eAgJ5GZ5K8EdUmw7nVrn-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="eAgJ5GZ5K8EdUmw7nVrn-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-18" edge="1" parent="1" source="eAgJ5GZ5K8EdUmw7nVrn-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="eAgJ5GZ5K8EdUmw7nVrn-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-19" edge="1" parent="1" source="eAgJ5GZ5K8EdUmw7nVrn-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;fontSize=11;" target="eAgJ5GZ5K8EdUmw7nVrn-9" value="HTTPS / JSON">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-20" edge="1" parent="1" source="eAgJ5GZ5K8EdUmw7nVrn-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="eAgJ5GZ5K8EdUmw7nVrn-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-21" edge="1" parent="1" source="eAgJ5GZ5K8EdUmw7nVrn-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="eAgJ5GZ5K8EdUmw7nVrn-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4E4AA5;strokeColor=#4E4AA5;fontColor=#FFFFFF;fontStyle=1;fontSize=15;" value="INFRAESTRUCTURA Y DESPLIEGUE" vertex="1">
+          <mxGeometry height="42" width="650" x="60" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF5FF;strokeColor=#63A5E8;fontStyle=1;fontSize=13;" value="Frontend&lt;br&gt;Render" vertex="1">
+          <mxGeometry height="70" width="160" x="90" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF5FF;strokeColor=#63A5E8;fontStyle=1;fontSize=13;" value="API REST&lt;br&gt;Render" vertex="1">
+          <mxGeometry height="70" width="160" x="310" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-25" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF9EF;strokeColor=#58B96C;fontStyle=1;fontSize=13;" value="PostgreSQL&lt;br&gt;Neon" vertex="1">
+          <mxGeometry height="70" width="160" x="530" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-26" edge="1" parent="1" source="eAgJ5GZ5K8EdUmw7nVrn-23" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="eAgJ5GZ5K8EdUmw7nVrn-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-27" edge="1" parent="1" source="eAgJ5GZ5K8EdUmw7nVrn-24" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="eAgJ5GZ5K8EdUmw7nVrn-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-28" parent="1" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=#FBFAFF;strokeColor=#6B55C7;fontColor=#3D2A77;fontSize=13;spacing=12;verticalAlign=top;" value="&lt;b&gt;PROYECCIÓN DE ESCALABILIDAD DE DATOS&lt;/b&gt;&lt;br&gt;&lt;br&gt;• Mayor volumen de registros y escenarios&lt;br&gt;• Escalado horizontal de servicios&lt;br&gt;• Procesamiento analítico futuro&lt;br&gt;• Integración con almacenamiento y analítica de mayor capacidad" vertex="1">
+          <mxGeometry height="150" width="670" x="810" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-29" edge="1" parent="1" source="eAgJ5GZ5K8EdUmw7nVrn-9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;dashed=1;dashPattern=4 4;strokeColor=#6B55C7;strokeWidth=2;" target="eAgJ5GZ5K8EdUmw7nVrn-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eAgJ5GZ5K8EdUmw7nVrn-30" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFFBF2;strokeColor=#54B86A;fontColor=#183D22;fontSize=13;fontStyle=1;spacing=10;align=center;" value="La arquitectura actual de TestData Studio prioriza modularidad, mantenibilidad, seguridad y separación de responsabilidades, dejando preparada la solución para evolucionar hacia escenarios con mayor volumen y complejidad de datos." vertex="1">
+          <mxGeometry height="55" width="1360" x="90" y="815" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

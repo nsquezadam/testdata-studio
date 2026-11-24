@@ -1,3 +1,4 @@
+import { useFeedback } from '../components/FeedbackProvider'
 import { useEffect, useMemo, useState } from 'react'
 
 import {
@@ -58,6 +59,9 @@ export default function ProjectsPage() {
 
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+
+
+  const { confirmAction, notifySuccess } = useFeedback()
 
 
   // ============================================================
@@ -217,6 +221,17 @@ export default function ProjectsPage() {
 
     event.preventDefault()
 
+    const accepted = await confirmAction({
+      title: editingProject
+        ? `¿Guardar los cambios del proyecto «${projectForm.nombre}»?`
+        : `¿Crear el proyecto «${projectForm.nombre}»?`,
+      description: 'Los cambios se guardarán en TestData Studio.',
+      confirmText: editingProject ? 'Guardar cambios' : 'Crear proyecto',
+      cancelText: 'Volver al formulario',
+      summary: [{ label: 'Proyecto', value: projectForm.nombre }],
+    })
+    if (!accepted) return
+
     setSavingProject(true)
 
     setError('')
@@ -268,7 +283,7 @@ export default function ProjectsPage() {
         }
 
 
-        setSuccess(
+        notifySuccess(
           'Proyecto modificado correctamente.'
         )
 
@@ -288,7 +303,7 @@ export default function ProjectsPage() {
         ])
 
 
-        setSuccess(
+        notifySuccess(
           'Proyecto creado correctamente.'
         )
       }
@@ -326,10 +341,12 @@ export default function ProjectsPage() {
         : 'desactivar'
 
 
-    const confirmed =
-      window.confirm(
-        `¿Deseas ${action} el proyecto "${project.nombre}"?`
-      )
+    const confirmed = await confirmAction({
+      title: `¿Deseas ${action} el proyecto «${project.nombre}»?`,
+      description: 'Este cambio de estado afectará su disponibilidad para los usuarios.',
+      confirmText: newStatus ? 'Reactivar proyecto' : 'Desactivar proyecto',
+      summary: [{ label: 'Proyecto', value: project.nombre }, { label: 'Nuevo estado', value: newStatus ? 'Activo' : 'Inactivo' }],
+    })
 
 
     if (!confirmed) {
@@ -375,7 +392,7 @@ export default function ProjectsPage() {
       }
 
 
-      setSuccess(
+      notifySuccess(
         newStatus
           ? 'Proyecto reactivado correctamente.'
           : 'Proyecto desactivado correctamente.'
@@ -460,6 +477,17 @@ export default function ProjectsPage() {
     }
 
 
+    const accepted = await confirmAction({
+      title: editingModel
+        ? `¿Guardar los cambios del modelo «${modelForm.nombre}»?`
+        : `¿Crear el modelo «${modelForm.nombre}»?`,
+      description: 'El modelo quedará asociado al proyecto seleccionado.',
+      confirmText: editingModel ? 'Guardar cambios' : 'Crear modelo',
+      cancelText: 'Volver al formulario',
+      summary: [{ label: 'Modelo', value: modelForm.nombre }, { label: 'Proyecto', value: selectedProject?.nombre || '—' }],
+    })
+    if (!accepted) return
+
     setSavingModel(true)
 
     setError('')
@@ -498,7 +526,7 @@ export default function ProjectsPage() {
         )
 
 
-        setSuccess(
+        notifySuccess(
           'Modelo modificado correctamente.'
         )
 
@@ -547,7 +575,7 @@ export default function ProjectsPage() {
         }))
 
 
-        setSuccess(
+        notifySuccess(
           'Modelo asociado correctamente al proyecto.'
         )
       }
@@ -585,10 +613,12 @@ export default function ProjectsPage() {
         : 'desactivar'
 
 
-    const confirmed =
-      window.confirm(
-        `¿Deseas ${action} el modelo "${model.nombre}"?`
-      )
+    const confirmed = await confirmAction({
+      title: `¿Deseas ${action} el modelo «${model.nombre}»?`,
+      description: 'Este cambio actualizará su disponibilidad en la plataforma.',
+      confirmText: newStatus ? 'Reactivar modelo' : 'Desactivar modelo',
+      summary: [{ label: 'Modelo', value: model.nombre }, { label: 'Nuevo estado', value: newStatus ? 'Activo' : 'Inactivo' }],
+    })
 
 
     if (!confirmed) {
@@ -619,7 +649,7 @@ export default function ProjectsPage() {
       )
 
 
-      setSuccess(
+      notifySuccess(
         newStatus
           ? 'Modelo reactivado correctamente.'
           : 'Modelo desactivado correctamente.'
@@ -789,16 +819,8 @@ export default function ProjectsPage() {
       )}
 
 
-      {success && (
 
-        <div className="projects-message success">
-          {success}
-        </div>
-
-      )}
-
-
-      {/* ======================================================
+{/* ======================================================
           FORMULARIO PROYECTO
           ====================================================== */}
 

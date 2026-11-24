@@ -1,0 +1,75 @@
+INC-01 – Manejo incorrecto de expiración de sesión
+
+Resultado actual:
+Cuando el token JWT expira, las solicitudes protegidas devuelven 401 Unauthorized; sin embargo, el frontend mantiene visible la pantalla autenticada y presenta los datos vacíos junto al mensaje “Sesión inválida o expirada”.
+
+Resultado esperado:
+Cuando el backend responda 401 debido a una sesión inválida o expirada, la aplicación debe eliminar el token almacenado, limpiar el usuario autenticado y retornar automáticamente a la pantalla de inicio de sesión.
+
+Severidad: Media.
+
+Prioridad: Alta, porque está relacionada con autenticación y experiencia del usuario.
+
+
+Usuario inicia sesión
+        ↓
+Se genera sesión/token
+        ↓
+Usuario trabaja normalmente
+        ↓
+¿Existe actividad reciente?
+   ↓ Sí                ↓ No
+Mantener/renovar       Sigue corriendo
+sesión controlada      tiempo de inactividad
+                           ↓
+                    Supera límite
+                           ↓
+                    Cerrar sesión
+                           ↓
+                       Login
+
+
+Actividad:
+clic
+teclado
+navegación
+acciones API
+     ↓
+actualiza últimaActividad
+
+últimaActividad + tiempo máximo de inactividad
+
+
+INC/MEJ-02 – Control de sesión por inactividad.
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+
+export async function apiFetch(path, options = {}) {
+  const token = localStorage.getItem('tds_token')
+
+  ...
+}
+
+
+JWT expira
+    ↓
+GET /users
+    ↓
+401
+    ↓
+apiFetch detecta 401
+    ↓
+elimina tds_token
+    ↓
+AuthContext:
+user = null
+    ↓
+App.jsx detecta:
+!user
+    ↓
+LoginPage
+    ↓
+"Tu sesión ha expirado.
+Inicia sesión nuevamente."
+solución
+Se implementó un manejo centralizado de respuestas 401 Unauthorized en el frontend. Cuando la sesión expira, se elimina el token almacenado, se limpia el usuario autenticado y la aplicación redirige al inicio de sesión mostrando un mensaje informativo. Además, se diferencia este caso de un error de credenciales durante el login.

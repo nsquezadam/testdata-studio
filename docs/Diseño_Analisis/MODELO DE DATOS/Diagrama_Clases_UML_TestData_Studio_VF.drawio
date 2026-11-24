@@ -1,0 +1,267 @@
+<mxfile host="Electron">
+  <diagram name="Página-1" id="Uv7XvrXKFJOzM6VFFJJd">
+    <mxGraphModel dx="2343" dy="579" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-1" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#7EA6E0;" value="TESTDATA STUDIO – DIAGRAMA DE CLASES UML&amp;nbsp;" vertex="1">
+          <mxGeometry height="42" width="1850" x="1410" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-2" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#007FFF;" value="Modelo orientado a objetos · Dominio + servicios · RF16 incorpora AuditoriaEstado y GestorEstado" vertex="1">
+          <mxGeometry height="26" width="1450" x="1620" y="935" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;Rol&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- rolId : Long&lt;br&gt;- nombre : String&lt;br&gt;- descripcion : String&lt;br&gt;- estado : Boolean&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ obtenerPermisos() : void&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="200" width="245" x="1350" y="977.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;Usuario&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- usuarioId : Long&lt;br&gt;- nombre : String&lt;br&gt;- apellido : String&lt;br&gt;- email : String&lt;br&gt;- passwordHash : String&lt;br&gt;- estado : Boolean&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ autenticar(clave) : Boolean&lt;br&gt;+ asignarRol(rol) : void&lt;br&gt;+ cambiarEstado(estado) : void&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="245" width="285" x="1870" y="977.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;Proyecto&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- proyectoId : Long&lt;br&gt;- nombre : String&lt;br&gt;- descripcion : String&lt;br&gt;- estado : Boolean&lt;br&gt;- fechaCreacion : DateTime&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ crearModelo(nombre) : ModeloDato&lt;br&gt;+ actualizarDatos() : void&lt;br&gt;+ cambiarEstado(estado) : void&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="235" width="300" x="2500" y="977.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;Modelo&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- modeloId : Long&lt;br&gt;- nombre : String&lt;br&gt;- descripcion : String&lt;br&gt;- estado : Boolean&lt;br&gt;- fechaCreacion : DateTime&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ agregarCampo(campo) : void&lt;br&gt;+ agregarRegla(regla) : void&lt;br&gt;+ cambiarEstado(estado) : void&lt;br&gt;+ validarConfiguracion() : Boolean&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="235" width="310" x="2990" y="961" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;Campo&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- campoId : Long&lt;br&gt;- nombre : String&lt;br&gt;- tipoDato : TipoDato&lt;br&gt;- descripcion : String&lt;br&gt;- orden : Integer&lt;br&gt;- estado : Boolean&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ actualizarDatos() : void&lt;br&gt;+ cambiarEstado(estado) : void&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="220" width="295" x="1980" y="1407.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;Regla&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- reglaId : Long&lt;br&gt;- nombre : String&lt;br&gt;- tipoRegla : TipoRegla&lt;br&gt;- descripcion : String&lt;br&gt;- estado : Boolean&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ asociarCampo(campo) : void&lt;br&gt;+ agregarParametro(clave, valor) : void&lt;br&gt;+ validarParametros() : Boolean&lt;br&gt;+ cambiarEstado(estado) : void&lt;br&gt;+ evaluar(datos) : Boolean&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="250" width="320" x="2370" y="1390" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;ReglaParametro&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- parametroId : Long&lt;br&gt;- clave : String&lt;br&gt;- valor : String&lt;br&gt;- orden : Integer&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ actualizarValor(valor) : void&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="275" x="2830" y="1407.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;Generacion&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- generacionId : Long&lt;br&gt;- cantidadSolicitada : Integer&lt;br&gt;- fecha : DateTime&lt;br&gt;- estado : String&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ iniciar() : void&lt;br&gt;+ generarCasos() : List&amp;lt;CasoPrueba&amp;gt;&lt;br&gt;+ finalizar() : void&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="215" width="280" x="1230" y="1390" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;CasoPrueba&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- casoPruebaId : Long&lt;br&gt;- tipoEscenario : String&lt;br&gt;- resultadoEsperado : String&lt;br&gt;- fechaCreacion : DateTime&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ agregarDato(dato) : void&lt;br&gt;+ asociarRegla(regla) : void&lt;br&gt;+ obtenerTrazabilidad() : String&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="220" width="285" x="1640" y="1390" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;DatoGenerado&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- datoGeneradoId : Long&lt;br&gt;- valorGenerado : String&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ obtenerValor() : String&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="155" width="270" x="1300" y="1822.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-13" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;Ejecucion&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- ejecucionId : Long&lt;br&gt;- origenRegistro : String&lt;br&gt;- resultadoObtenido : String&lt;br&gt;- estado : String&lt;br&gt;- observacion : String&lt;br&gt;- fechaEjecucion : DateTime&lt;br&gt;- fechaRegistro : DateTime&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ registrarResultado(resultado) : void&lt;br&gt;+ compararConEsperado(esperado) : String&lt;br&gt;+ marcarBloqueada() : void&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="245" width="340" x="1650" y="1760" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F4F4F4;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&amp;lt;&amp;lt;service&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;MotorReglas&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;&amp;nbsp;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ validarRegla(regla) : Boolean&lt;br&gt;+ generarValorValido(regla) : Object&lt;br&gt;+ generarValorInvalido(regla) : Object&lt;br&gt;+ generarValorLimite(regla) : Object&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="190" width="290" x="2170" y="2040" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F4F4F4;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&amp;lt;&amp;lt;service&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;GestorResultados&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;&amp;nbsp;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ registrarManual(caso, resultado) : Ejecucion&lt;br&gt;+ importarCSV(archivo) : List&amp;lt;Ejecucion&amp;gt;&lt;br&gt;+ clasificar(caso, resultado) : String&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="190" width="300" x="2990" y="1787.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F4F4F4;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&amp;lt;&amp;lt;service&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;GestorEstado&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;&amp;nbsp;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ cambiarEstado(entidad, id, nuevoEstado, usuario) : void&lt;br&gt;+ validarPermiso(usuario, entidad) : Boolean&lt;br&gt;+ registrarAuditoria(evento) : void&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="230" width="300" x="3120" y="1440" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-17" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=none;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-4" value="1        0..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1810" y="1077.5" />
+              <mxPoint x="1810" y="1077.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-18" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=none;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-5" value="1        0..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2330" y="1070" />
+              <mxPoint x="2330" y="1070" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-19" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=diamondThin;startFill=1;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-6" value="1        1..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2900" y="1070" />
+              <mxPoint x="2900" y="1070" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-20" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=diamondThin;startFill=1;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-7" value="1        0..*">
+          <mxGeometry relative="1" x="-0.0961" as="geometry">
+            <Array as="points">
+              <mxPoint x="3030" y="1260" />
+              <mxPoint x="2097.5" y="1260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-21" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=diamondThin;startFill=1;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-8" value="1        0..*">
+          <mxGeometry relative="1" x="-0.0856" as="geometry">
+            <Array as="points">
+              <mxPoint x="3070" y="1320" />
+              <mxPoint x="2460" y="1320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-22" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=diamondThin;startFill=1;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-9" value="1        0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-23" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=none;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-7" value="0..*      1..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2230" y="1425" />
+              <mxPoint x="2210" y="1425" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-24" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=none;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-10" value="1        0..*">
+          <mxGeometry relative="1" x="-0.0392" as="geometry">
+            <Array as="points">
+              <mxPoint x="3260" y="1300" />
+              <mxPoint x="1360" y="1300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-25" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=none;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-10" value="1        0..*">
+          <mxGeometry relative="1" x="-0.2024" as="geometry">
+            <Array as="points">
+              <mxPoint x="1780" y="1140" />
+              <mxPoint x="1780" y="1230" />
+              <mxPoint x="1280" y="1230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-26" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=diamondThin;startFill=1;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-11" value="1        1..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-27" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=diamondThin;startFill=1;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-12" value="1        1..*">
+          <mxGeometry relative="1" x="-0.3327" as="geometry">
+            <Array as="points">
+              <mxPoint x="1570" y="1540" />
+              <mxPoint x="1570" y="1680" />
+              <mxPoint x="1410" y="1680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-28" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=diamondThin;startFill=1;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-13" value="1        0..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1870" y="1605" />
+              <mxPoint x="2080" y="1605" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-29" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=none;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-8" value="0..*      1..*">
+          <mxGeometry relative="1" x="-0.6808" as="geometry">
+            <Array as="points">
+              <mxPoint x="1900" y="1660" />
+              <mxPoint x="2530" y="1660" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-30" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=none;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-13" value="1        0..*">
+          <mxGeometry relative="1" x="-0.6585" as="geometry">
+            <Array as="points">
+              <mxPoint x="1960" y="1480" />
+              <mxPoint x="1960" y="1480" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-31" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=none;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-45" value="1        0..*">
+          <mxGeometry relative="1" x="-0.2293" as="geometry">
+            <Array as="points">
+              <mxPoint x="2200" y="1100" />
+              <mxPoint x="2200" y="1240" />
+              <mxPoint x="2765" y="1240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-32" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;" target="JwLBJyRJPs-g1dryEMkj-14" value="usa">
+          <mxGeometry relative="1" x="0.3196" as="geometry">
+            <Array as="points">
+              <mxPoint x="1210" y="1497.5" />
+              <mxPoint x="1210" y="2090" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-33" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;" target="JwLBJyRJPs-g1dryEMkj-8" value="evalúa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2410" y="1830" />
+              <mxPoint x="2410" y="1830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-34" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;" target="JwLBJyRJPs-g1dryEMkj-13" value="crea / actualiza">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-35" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;" target="JwLBJyRJPs-g1dryEMkj-11" value="consulta esperado">
+          <mxGeometry relative="1" x="-0.0381" as="geometry">
+            <Array as="points">
+              <mxPoint x="3140" y="1710" />
+              <mxPoint x="1860" y="1710" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-36" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;" target="JwLBJyRJPs-g1dryEMkj-45" value="crea">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2670" y="1640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-37" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;" target="JwLBJyRJPs-g1dryEMkj-4" value="cambia estado">
+          <mxGeometry relative="1" x="-0.0201" as="geometry">
+            <Array as="points">
+              <mxPoint x="3240" y="1350" />
+              <mxPoint x="2012.5" y="1350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-38" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;" target="JwLBJyRJPs-g1dryEMkj-5" value="cambia estado">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="3270" y="1280" />
+              <mxPoint x="2650" y="1280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-39" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;" target="JwLBJyRJPs-g1dryEMkj-6" value="cambia estado">
+          <mxGeometry relative="1" x="-0.1171" as="geometry">
+            <Array as="points">
+              <mxPoint x="3340" y="1070" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-40" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;" target="JwLBJyRJPs-g1dryEMkj-7" value="cambia estado">
+          <mxGeometry relative="1" x="0.1252" as="geometry">
+            <Array as="points">
+              <mxPoint x="3270" y="1690" />
+              <mxPoint x="2127.5" y="1690" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-41" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;" target="JwLBJyRJPs-g1dryEMkj-8" value="cambia estado">
+          <mxGeometry relative="1" x="0.0679" as="geometry">
+            <Array as="points">
+              <mxPoint x="3200" y="1390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-42" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;fontSize=15;align=left;verticalAlign=top;spacing=8;" value="&lt;b&gt;Leyenda UML&lt;/b&gt;&lt;br&gt;— Asociación · ◆— Composición · - - -▷ Dependencia/uso · 1, 0..*, 1..* = multiplicidad" vertex="1">
+          <mxGeometry height="75" width="650" x="1250" y="2145" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-43" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=14;align=left;verticalAlign=top;spacing=8;" value="&lt;div style=&quot;font-family:Arial;font-size:13px;&quot;&gt;&lt;b&gt;RF16&lt;/b&gt;&lt;br&gt;Usuario, Proyecto, Modelo, Campo y Regla son las entidades cuya activación/desactivación forma parte del requerimiento funcional. GestorEstado valida permisos, realiza el cambio lógico y crea AuditoriaEstado con responsable, entidad, registro, estado anterior/nuevo y fecha.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="95" width="620" x="2520" y="2070" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-44" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=14;align=left;verticalAlign=top;spacing=8;" value="&lt;b&gt;Decisión de diseño:&lt;/b&gt; AuditoriaEstado usa entidadAfectada + registroId porque RF16 requiere un historial transversal. Los métodos son una propuesta de diseño para la implementación y no agregan nuevos requerimientos funcionales." vertex="1">
+          <mxGeometry height="75" width="670" x="2520" y="2180" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-45" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;AuditoriaEstado&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- auditoriaId : Long&lt;br&gt;- usuarioId : Long&lt;br&gt;- entidadAfectada : String&lt;br&gt;- registroId : Long&lt;br&gt;- estadoAnterior : Boolean&lt;br&gt;- estadoNuevo : Boolean&lt;br&gt;- fechaCambio : DateTime&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;+ registrar() : void&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="245" width="300" x="2520" y="1760" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-46" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;TipoDato&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- tipoDatoId : Long&lt;br&gt;- codigo : String&lt;br&gt;- nombre : String&lt;br&gt;- descripcion : String&lt;br&gt;- estado : Boolean&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;&amp;nbsp;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="155" width="295" x="1980" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-47" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;align=left;verticalAlign=top;spacing=4;fontSize=15;" value="&lt;div style=&quot;font-family: Arial; font-size: 13px;&quot;&gt;&lt;div style=&quot;text-align: center; font-size: 15px; padding: 4px;&quot;&gt;&lt;b&gt;TipoRegla&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;- tipoReglaId : Long&lt;br&gt;- codigo : String&lt;br&gt;- nombre : String&lt;br&gt;- descripcion : String&lt;br&gt;- estado : Boolean&lt;/div&gt;&lt;hr&gt;&lt;div style=&quot;padding:4px&quot;&gt;&amp;nbsp;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="142.5" width="320" x="2370" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-48" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=none;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-7" value="1        0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JwLBJyRJPs-g1dryEMkj-49" edge="1" parent="1" source="JwLBJyRJPs-g1dryEMkj-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;startArrow=none;endArrow=none;" target="JwLBJyRJPs-g1dryEMkj-8" value="1        0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

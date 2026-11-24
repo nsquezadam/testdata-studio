@@ -1,11 +1,16 @@
+# ============================================================
+# TestData Studio - archivos locales / generados
+# ============================================================
+
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
 .venv/
 venv/
-*.py[cod]
 backend/.venv/
-.pytest_cache/
 
 # Variables de entorno / credenciales
 .env
@@ -13,25 +18,19 @@ backend/.venv/
 !.env.example
 backend/.env
 frontend/.env
-# React / Node
+
+# Node / Vite
 node_modules/
+frontend/node_modules/
 dist/
+frontend/dist/
 build/
 
-# Tests
-.pytest_cache/
-.coverage
-htmlcov/
-
-# IDE / OS
+# IDE / sistema
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
-
-# Windows / Sistema
-Thumbs.db
-.DS_Store
 
 # Logs
 *.log
@@ -41,27 +40,30 @@ Thumbs.db
 ~$*.xlsx
 ~$*.pptx
 
-# FRONTED 
-# Node
-frontend/node_modules/
-frontend/dist/
+# Resultados y credenciales de automatización
+# Los scripts se versionan; las salidas/evidencias se incorporarán al cierre final.
+automation/resultados/
+automation/resultados.zip
+automation/jmeter/local.properties
+automation/jmeter/reportes/
+automation/jmeter/resultados/
+automation/selenium/evidencias/
+automation/**/__pycache__/
 
+# Archivos auxiliares locales
+estructura_proyecto.txt
 
-# Documentación y material de trabajo local
-/docs/
-/design/
-/evidencias/
+# Documentación/evidencias académicas de trabajo local
+# Se incorporarán de manera selectiva en el cierre final del proyecto.
 /DATOS_EXTRAS.md
-/database/
 
-# Respaldos y archivos auxiliares
+# Respaldos locales
 /backend/db_package_backup/
-README_v1.md
 
-# Documentación técnica temporal de desarrollo
-frontend/README_M02_INC02.md
-frontend/README_M03_CP06.md
-backend/README_INC02.md
-backend/README_INC03.md
-backend/README_INC04.md
-backend/README_M03_CP06.md
+# README históricos temporales (consolidar en docs/Bitacora_Desarrollo al cierre)
+README_v1.md
+README_M*.md
+README_RNF*.md
+backend/README_INC*.md
+backend/README_M*.md
+frontend/README_M*.md

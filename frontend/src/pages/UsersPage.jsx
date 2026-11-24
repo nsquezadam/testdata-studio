@@ -1,3 +1,4 @@
+import { useFeedback } from '../components/FeedbackProvider'
 import { useEffect, useMemo, useState } from 'react'
 import {
   createUser,
@@ -26,6 +27,9 @@ export default function UsersPage({ currentUser }) {
 
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+
+  const { confirmAction, notifySuccess } = useFeedback()
+
 
   const [formOpen, setFormOpen] = useState(false)
   const [editingUser, setEditingUser] = useState(null)
@@ -112,6 +116,17 @@ export default function UsersPage({ currentUser }) {
   async function handleSubmit(event) {
     event.preventDefault()
 
+    const accepted = await confirmAction({
+      title: editingUser
+        ? `¿Guardar los cambios de ${form.nombre} ${form.apellido}?`
+        : `¿Crear el usuario ${form.nombre} ${form.apellido}?`,
+      description: 'Los datos se guardarán en TestData Studio.',
+      confirmText: editingUser ? 'Guardar cambios' : 'Crear usuario',
+      cancelText: 'Volver al formulario',
+      summary: [{ label: 'Usuario', value: `${form.nombre} ${form.apellido}` }, { label: 'Correo', value: form.email }],
+    })
+    if (!accepted) return
+
     setSaving(true)
     setError('')
     setSuccess('')
@@ -141,7 +156,7 @@ export default function UsersPage({ currentUser }) {
           )
         )
 
-        setSuccess('Usuario modificado correctamente.')
+        notifySuccess('Usuario modificado correctamente.')
       } else {
         const payload = {
           nombre: form.nombre,
@@ -158,7 +173,7 @@ export default function UsersPage({ currentUser }) {
           created,
         ])
 
-        setSuccess('Usuario creado correctamente.')
+        notifySuccess('Usuario creado correctamente.')
       }
 
       setFormOpen(false)
@@ -180,9 +195,12 @@ export default function UsersPage({ currentUser }) {
       ? 'reactivar'
       : 'desactivar'
 
-    const confirmed = window.confirm(
-      `¿Deseas ${action} al usuario ${user.nombre} ${user.apellido}?`
-    )
+    const confirmed = await confirmAction({
+      title: `¿Deseas ${action} al usuario ${user.nombre} ${user.apellido}?`,
+      description: 'Se actualizará el estado del usuario en TestData Studio.',
+      confirmText: newStatus ? 'Reactivar usuario' : 'Desactivar usuario',
+      summary: [{ label: 'Usuario', value: `${user.nombre} ${user.apellido}` }, { label: 'Nuevo estado', value: newStatus ? 'Activo' : 'Inactivo' }],
+    })
 
     if (!confirmed) {
       return
@@ -205,7 +223,7 @@ export default function UsersPage({ currentUser }) {
         )
       )
 
-      setSuccess(
+      notifySuccess(
         newStatus
           ? 'Usuario reactivado correctamente.'
           : 'Usuario desactivado correctamente.'
@@ -290,14 +308,8 @@ export default function UsersPage({ currentUser }) {
         </div>
       )}
 
-      {success && (
-        <div className="users-message success">
-          {success}
-        </div>
-      )}
 
-
-      {formOpen && (
+{formOpen && (
         <section className="user-form-card">
 
           <div className="user-form-header">

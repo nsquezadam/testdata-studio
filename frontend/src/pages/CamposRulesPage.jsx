@@ -1,3 +1,4 @@
+import { useFeedback } from '../components/FeedbackProvider'
 /* ============================================================
    MODIFICACIÓN 2026-11-18 - M02 / INC-02 / INC-03
    INC-02: validación preventiva para no enviar un orden ya utilizado por
@@ -242,6 +243,9 @@ export default function CamposRulesPage() {
 
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const { confirmAction, notifySuccess } = useFeedback()
+
+
   const [catalogWarning, setCatalogWarning] = useState('')
 
   const fieldFormRef = useRef(null)
@@ -562,6 +566,17 @@ export default function CamposRulesPage() {
       }
     }
 
+    const accepted = await confirmAction({
+      title: editingField
+        ? `¿Guardar los cambios del campo «${fieldForm.nombre}»?`
+        : `¿Crear el campo «${fieldForm.nombre}»?`,
+      description: 'La configuración del modelo se actualizará con este cambio.',
+      confirmText: editingField ? 'Guardar cambios' : 'Crear campo',
+      cancelText: 'Volver al formulario',
+      summary: [{ label: 'Campo', value: fieldForm.nombre }, { label: 'Modelo', value: selectedModel?.nombre || '—' }],
+    })
+    if (!accepted) return
+
     setSavingField(true)
     setError('')
     setSuccess('')
@@ -588,7 +603,7 @@ export default function CamposRulesPage() {
           )
         )
 
-        setSuccess('Campo modificado correctamente.')
+        notifySuccess('Campo modificado correctamente.')
 
       } else {
         const created = await createField(
@@ -603,7 +618,7 @@ export default function CamposRulesPage() {
           Number(a.orden || 0) - Number(b.orden || 0)
         ))
 
-        setSuccess('Campo creado correctamente.')
+        notifySuccess('Campo creado correctamente.')
       }
 
       setFieldFormOpen(false)
@@ -623,9 +638,12 @@ export default function CamposRulesPage() {
     const newStatus = !field.estado
     const action = newStatus ? 'reactivar' : 'desactivar'
 
-    const confirmed = window.confirm(
-      `¿Deseas ${action} el campo "${field.nombre}"?`
-    )
+    const confirmed = await confirmAction({
+      title: `¿Deseas ${action} el campo «${field.nombre}»?`,
+      description: 'Revisa el impacto de este cambio en las reglas que utilizan el campo.',
+      confirmText: newStatus ? 'Reactivar campo' : 'Desactivar campo',
+      summary: [{ label: 'Campo', value: field.nombre }, { label: 'Nuevo estado', value: newStatus ? 'Activo' : 'Inactivo' }],
+    })
 
     if (!confirmed) {
       return
@@ -648,7 +666,7 @@ export default function CamposRulesPage() {
         )
       )
 
-      setSuccess(
+      notifySuccess(
         newStatus
           ? 'Campo reactivado correctamente.'
           : 'Campo desactivado correctamente.'
@@ -1044,6 +1062,25 @@ export default function CamposRulesPage() {
       return
     }
 
+    // Validar parámetros antes de solicitar confirmación.
+    try {
+      buildRulePayload()
+    } catch (err) {
+      setError(err.message)
+      return
+    }
+
+    const accepted = await confirmAction({
+      title: editingRule
+        ? `¿Guardar los cambios de la regla «${ruleForm.nombre}»?`
+        : `¿Crear la regla «${ruleForm.nombre}»?`,
+      description: 'Esta configuración será utilizada al generar escenarios de prueba.',
+      confirmText: editingRule ? 'Guardar cambios' : 'Crear regla',
+      cancelText: 'Volver al formulario',
+      summary: [{ label: 'Regla', value: ruleForm.nombre }, { label: 'Modelo', value: selectedModel?.nombre || '—' }],
+    })
+    if (!accepted) return
+
     setSavingRule(true)
     setError('')
     setSuccess('')
@@ -1065,7 +1102,7 @@ export default function CamposRulesPage() {
           )
         )
 
-        setSuccess('Regla modificada correctamente.')
+        notifySuccess('Regla modificada correctamente.')
 
       } else {
         const created = await createRule(
@@ -1078,7 +1115,7 @@ export default function CamposRulesPage() {
           created,
         ])
 
-        setSuccess('Regla creada correctamente.')
+        notifySuccess('Regla creada correctamente.')
       }
 
       setRuleFormOpen(false)
@@ -1098,9 +1135,12 @@ export default function CamposRulesPage() {
     const newStatus = !rule.estado
     const action = newStatus ? 'reactivar' : 'desactivar'
 
-    const confirmed = window.confirm(
-      `¿Deseas ${action} la regla "${rule.nombre}"?`
-    )
+    const confirmed = await confirmAction({
+      title: `¿Deseas ${action} la regla «${rule.nombre}»?`,
+      description: 'Las próximas generaciones utilizarán las reglas que queden activas.',
+      confirmText: newStatus ? 'Reactivar regla' : 'Desactivar regla',
+      summary: [{ label: 'Regla', value: rule.nombre }, { label: 'Nuevo estado', value: newStatus ? 'Activa' : 'Inactiva' }],
+    })
 
     if (!confirmed) {
       return
@@ -1123,7 +1163,7 @@ export default function CamposRulesPage() {
         )
       )
 
-      setSuccess(
+      notifySuccess(
         newStatus
           ? 'Regla reactivada correctamente.'
           : 'Regla desactivada correctamente.'
@@ -1332,13 +1372,8 @@ export default function CamposRulesPage() {
         </div>
       )}
 
-      {success && (
-        <div className="projects-message success">
-          {success}
-        </div>
-      )}
 
-      {catalogWarning && (
+{catalogWarning && (
         <div className="configuration-catalog-warning">
           {catalogWarning}
         </div>

@@ -1,0 +1,35 @@
+[
+  {
+    "caso_prueba_id": 13,
+    "id_cliente": null,
+    "nombre_cliente": "dato_1",
+    "fecha_incorporacion": "2026-01-02",
+    "venta_anual": 200000001,
+    "cliente_activo": true,
+    "categoria_de_venta": "RETAIL",
+    "correo_empresa": "u1@a.cl",
+    "RAZON_SOCIAL": "dato_1"
+  },
+  {
+    "caso_prueba_id": 14,
+    "id_cliente": 100,
+    "nombre_cliente": "XXXX",
+    "fecha_incorporacion": "2026-01-02",
+    "venta_anual": 200000001,
+    "cliente_activo": true,
+    "categoria_de_venta": "RETAIL",
+    "correo_empresa": "u2@a.cl",
+    "RAZON_SOCIAL": "XXXX"
+  },
+  {
+    "caso_prueba_id": 15,
+    "id_cliente": 100,
+    "nombre_cliente": "dato_3",
+    "fecha_incorporacion": "2025-12-31",
+    "venta_anual": 200000001,
+    "cliente_activo": true,
+    "categoria_de_venta": "RETAIL",
+    "correo_empresa": "u3@a.cl",
+    "RAZON_SOCIAL": "dato_3"
+  }
+]

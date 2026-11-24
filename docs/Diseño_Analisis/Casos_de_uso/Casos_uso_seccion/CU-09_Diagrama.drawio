@@ -1,0 +1,53 @@
+<mxfile host="Electron" agent="ChatGPT">
+  <diagram id="p09" name="CU-09">
+    <mxGraphModel dx="2283" dy="914" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#1F4E79;" value="CU-09 - Comparar y clasificar resultados" vertex="1">
+          <mxGeometry height="38" width="1000" x="300" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;strokeWidth=1.5;fontSize=12;verticalAlign=top;align=left;spacingTop=8;spacingLeft=10;" value="TESTDATA STUDIO" vertex="1">
+          <mxGeometry height="670" width="960" x="320" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="actor1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fontSize=12;" value="Analista/Tester" vertex="1">
+          <mxGeometry height="130" width="120" x="70" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="CU-09" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4F81BD;strokeWidth=1.4;fontSize=11;align=center;verticalAlign=middle;strokeWidth=2;fillColor=#EEF5FB;" value="&lt;b&gt;CU-09&lt;/b&gt;&lt;br&gt;Comparar y clasificar resultados" vertex="1">
+          <mxGeometry height="90" width="350" x="650" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="CU-07" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4F81BD;strokeWidth=1.4;fontSize=11;align=center;verticalAlign=middle;" value="&lt;b&gt;CU-07&lt;/b&gt;&lt;br&gt;Registrar resultado de ejecución" vertex="1">
+          <mxGeometry height="75" width="285" x="395" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="CU-08" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4F81BD;strokeWidth=1.4;fontSize=11;align=center;verticalAlign=middle;" value="&lt;b&gt;CU-08&lt;/b&gt;&lt;br&gt;Importar resultados mediante CSV" vertex="1">
+          <mxGeometry height="75" width="285" x="950" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="i709" edge="1" parent="1" source="CU-07" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;fontSize=9;" target="CU-09" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="537.5" y="300" />
+              <mxPoint x="825" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i809" edge="1" parent="1" source="CU-08" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;fontSize=9;" target="CU-09" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F7F7F7;strokeColor=#AAAAAA;dashed=1;fontSize=10;align=left;verticalAlign=middle;spacingLeft=8;" value="&lt;b&gt;Lectura UML&lt;/b&gt;&lt;br&gt;CU-09 no se inicia directamente. Se ejecuta automáticamente cuando CU-07 registra un resultado o CU-08 incorpora un resultado válido mediante CSV. La autenticación ya fue satisfecha por el caso de uso que lo invoca." vertex="1">
+          <mxGeometry height="95" width="800" x="400" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="comm_cu07" edge="1" parent="1" source="actor1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;endArrow=none;startArrow=none;strokeColor=#67AB9F;" target="CU-07" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="comm_cu08" edge="1" parent="1" source="actor1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.2;endArrow=none;startArrow=none;strokeColor=#67AB9F;" target="CU-08" value="">
+          <mxGeometry relative="1" x="-0.0517" as="geometry">
+            <Array as="points">
+              <mxPoint x="130" y="520" />
+              <mxPoint x="1120" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

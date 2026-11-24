@@ -1,3 +1,4 @@
+import { useFeedback } from '../components/FeedbackProvider'
 /* ============================================================
    CREACIÓN 2026-11-18 - M03 / CP-06
    Pantalla F03 - Generación de Datos y Escenarios.
@@ -90,6 +91,9 @@ export default function GenerationPage() {
   const [exporting, setExporting] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+
+  const { confirmAction, notifySuccess } = useFeedback()
+
 
   const resultsRef = useRef(null)
   const traceRef = useRef(null)
@@ -283,6 +287,15 @@ export default function GenerationPage() {
       return
     }
 
+    const accepted = await confirmAction({
+      title: `¿Generar ${requested} escenario(s) ${scenario.toLowerCase()} para el modelo seleccionado?`,
+      description: 'La generación creará casos de prueba que quedarán registrados en el historial.',
+      confirmText: 'Confirmar generación',
+      cancelText: 'Volver a la configuración',
+      summary: [{ label: 'Modelo', value: selectedModel?.nombre || '—' }, { label: 'Cantidad', value: String(requested) }, { label: 'Escenario', value: scenario }],
+    })
+    if (!accepted) return
+
     setGenerating(true)
 
     try {
@@ -294,7 +307,7 @@ export default function GenerationPage() {
 
       setGeneration(result)
       setSelectedCaseId(result.casos?.[0]?.caso_prueba_id || null)
-      setSuccess(
+      notifySuccess(
         `Generación #${result.generacion_id} completada: ${result.casos.length} escenario(s) creado(s).`
       )
       setHistory(await getGenerations(modelId, 10))
@@ -319,7 +332,7 @@ export default function GenerationPage() {
 
     try {
       const filename = await exportGeneration(generation.generacion_id, format)
-      setSuccess(`Archivo ${format.toUpperCase()} generado correctamente: ${filename}`)
+      notifySuccess(`Archivo ${format.toUpperCase()} generado correctamente: ${filename}`)
     } catch (requestError) {
       setError(requestError.message)
     } finally {
@@ -368,11 +381,8 @@ export default function GenerationPage() {
         <div className="generation-message error">{error}</div>
       )}
 
-      {success && (
-        <div className="generation-message success">{success}</div>
-      )}
 
-      <article className="generation-context-card">
+<article className="generation-context-card">
         <div className="generation-context-copy">
           <span className="eyebrow">CONTEXTO DE GENERACIÓN</span>
           <h2>Selecciona proyecto y modelo</h2>

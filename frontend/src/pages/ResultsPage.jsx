@@ -1,3 +1,4 @@
+import { useFeedback } from '../components/FeedbackProvider'
 /* ============================================================
    CREACIÓN 2026-11-20 - M04 / CP-08
    Pantalla de Resultados y ejecución.
@@ -47,6 +48,7 @@ export default function ResultsPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const { confirmAction, notifySuccess } = useFeedback()
   const formRef = useRef(null)
 
   const counts = useMemo(() => {
@@ -134,6 +136,13 @@ export default function ResultsPage() {
       setError('Ingresa el resultado obtenido o marca la ejecución como bloqueada.')
       return
     }
+    const accepted = await confirmAction({
+      title: `¿Registrar el resultado del caso #${selectedCase.caso_prueba_id}?`,
+      description: 'El sistema calculará el estado de la ejecución al guardar.',
+      confirmText: 'Confirmar registro',
+      cancelText: 'Volver al formulario',
+    })
+    if (!accepted) return
     setSaving(true); setError(''); setSuccess('')
     try {
       const updated = await createManualExecution(selectedCase.caso_prueba_id, {
@@ -143,7 +152,7 @@ export default function ResultsPage() {
         bloqueado: blocked,
       })
       setSelectedCase(updated)
-      setSuccess(`Resultado registrado. Estado final: ${updated.estado}.`)
+      notifySuccess(`Resultado registrado. Estado final: ${updated.estado}.`)
       await loadCases(selectedModelId, stateFilter)
     } catch (err) { setError(err.message) }
     finally { setSaving(false) }
@@ -162,7 +171,7 @@ export default function ResultsPage() {
       </header>
 
       {error && <div className="generation-message error">{error}</div>}
-      {success && <div className="generation-message success">{success}</div>}
+
 
       <article className="generation-context-card">
         <div className="generation-context-copy">

@@ -1,0 +1,4 @@
+caso_prueba_id,id_cliente,nombre_cliente,fecha_incorporacion,venta_anual,cliente_activo,categoria_de_venta,correo_empresa,RAZON_SOCIAL
+16,100,dato_1,2026-01-01,200000001,true,RETAIL,u1@a.cl,dato_1
+17,100,dato_2,2026-01-01,200000001,true,RETAIL,u2@a.cl,dato_2
+18,100,dato_3,2026-01-02,200000001,true,RETAIL,u3@a.cl,dato_3

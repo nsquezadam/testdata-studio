@@ -1,0 +1,6 @@
+,,caso_prueba_id,resultado_obtenido,bloqueado,observacion,fecha_ejecucion
+,14,Rechazado,false,El sistema externo rechazó el dato,2026-11-20T22:00:00
+12,Aceptado,false,El sistema externo aceptó el dato,2026-11-20T22:01:00
+6,Rechazado,false,El sistema externo aceptó el dato invalido,2026-11-20T22:01:00
+7,,true,Ambiente externo no disponible,2026-11-20T22:02:00
+999999,Aceptado,false,Caso inexistente para validar error,2026-11-20T22:03:00

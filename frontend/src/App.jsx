@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { AuthProvider, useAuth } from './auth/AuthContext'
 import LoginPage from './pages/LoginPage'
+import { FeedbackProvider } from './components/FeedbackProvider'
 import DashboardPage from './pages/DashboardPage'
 import './styles.css'
 
@@ -22,7 +23,9 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <FeedbackProvider>
+        <AppContent />
+      </FeedbackProvider>
     </AuthProvider>
   )
 }
